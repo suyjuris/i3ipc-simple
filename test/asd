@@ -1,0 +1,18 @@
+J
+c invalid_command
+C nop
+s 3
+S 0
+V
+q w
+q o
+q t
+q m
+q b
+q v
+q i
+q c
+B bar-0
+t test_tick
+y
+n

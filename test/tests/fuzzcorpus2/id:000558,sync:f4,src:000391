@@ -1,0 +1,3 @@
+J
+m00000000000000000000000
+s0:false,"parse_error":true,"error":"Expected one of these tokens: <end>, '[', 'move', 'exec', 'exit', 'restart', 'reload', 'shmlog', 'debuglog', 'border', 'layout', 'append_layout', 'workspace', 'focus', 'kill', 'open', 'fullscreen', 'sticky', 'split', 'floateeeeeeeeeeeeeeeeeing', 'mark', 'unmark', 'resize', 'rename', 'nop', 'scratchpad', 'swap', 'tit:0000},"current_worksbar'","input":"inval^^^^^^^^^^^^^"}]

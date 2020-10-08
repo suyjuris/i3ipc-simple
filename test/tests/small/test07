@@ -1,0 +1,1 @@
+j22{"id":"bar-0","tray_padding":2,"mode":"dock","hidden_state":"hide","modifier":64,"position":"bottom","status_command":"~/misc_text/i3/status 2>> ~/status.err","font":"pango:Inconsolata 10","workspace_buttons":true,"workspace_min_width":0,"strip_workspace_numbers":false,"strip_workspace_name":false,"binding_mode_indicator":true,"verbose":false,"colors":{}}
