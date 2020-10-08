@@ -159,7 +159,10 @@ Trying to run this will give the following.
 
     $ gcc examples/example5.c -o example5 && ./example5
     Error: run command failed
-    Error: with error: 'Expected one of these tokens: <end>, '[', 'move', 'exec', 'exit', 'restart', 'reload', 'shmlog', 'debuglog', 'border', 'layout', 'append_layout', 'workspace', 'focus', 'kill', 'open', 'fullscreen', 'sticky', 'split', 'floating', 'mark', 'unmark', 'resize', 'rename', 'nop', 'scratchpad', 'swap', 'title_format', 'mode', 'bar''
+    Error: with error: 'Expected one of these tokens: <end>, '[', 'move', 'exec', 'exit', 'restart',
+    'reload', 'shmlog', 'debuglog', 'border', 'layout', 'append_layout', 'workspace', 'focus',
+    'kill', 'open', 'fullscreen', 'sticky', 'split', 'floating', 'mark', 'unmark', 'resize',
+    'rename', 'nop', 'scratchpad', 'swap', 'title_format', 'mode', 'bar''
     Error: while executing command: 'invalid_command'
     Aborted (core dumped)
     $
