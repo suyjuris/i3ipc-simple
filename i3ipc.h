@@ -749,6 +749,7 @@ enum I3ipc_type_values {
 #ifdef I3IPC_IMPLEMENTATION
 
 #include <assert.h>
+#include <alloca.h>
 #include <errno.h>
 #include <stdlib.h>
 #include <string.h>
