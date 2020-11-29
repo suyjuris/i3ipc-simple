@@ -211,12 +211,12 @@ The data structures are modelled closely after the messages received from i3, so
 * The name of each attribute corresponds exactly to its name in the json representation, with one exception: `class` is named `window_class` instead, for compatibility with C++ code.
 * Strings are represented by a zero-terminated `char*` and a length. For ordinary attributes these are split into two members, `<name>` and `<name>_size` . Many strings have only a limited set of possible values, for these an additional `<name>_enum` member exists, which you can compare with symbolic constants, as in `example2.c` above:
 
-```C
-I3ipc_event_window* ev = (I3ipc_event_window*)ev_any;
-if (ev->change_enum == I3IPC_WINDOW_CHANGE_FOCUS) {
-    printf("focused window: %s\n", ev->container.name);
-}
-```
+    ```C
+    I3ipc_event_window* ev = (I3ipc_event_window*)ev_any;
+    if (ev->change_enum == I3IPC_WINDOW_CHANGE_FOCUS) {
+        printf("focused window: %s\n", ev->container.name);
+    }
+    ```
 
 * An array of type `T` is represented by a pointer and size, with `<name>` and `<name>_size` members, respectively. Arrays of strings need special treatment, there the strings use `I3ipc_string`. (Internally, strings are just arrays of `char` and any array of arrays would need to be handled similarly.)
 * Some fields may be `null` in the JSON representation, which causes zero-initialisation. Hence strings, arrays and pointers will be NULL in that case. For primitive types, there is no way to differentiate between the values `0` and `NULL`, so an additional `<name>_set` member is provided, which indicates whether the attribute was set.
