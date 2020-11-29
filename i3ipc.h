@@ -29,10 +29,6 @@
  * The library can be found at https://github.com/suyjuris/i3ipc-simple .
  * The README contains high-level documentation. */
 
-// @Cleanup Inner types
-// @Cleanup build.sh interface
-// @Cleanup i3ipc_test interface
-
 
 #ifndef I3IPC_INCLUDE_I3IPC_H
 #define I3IPC_INCLUDE_I3IPC_H
