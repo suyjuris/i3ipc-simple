@@ -105,15 +105,16 @@ void i3ipc_send_tick(char const* payload);
 void i3ipc_sync(int random_value, size_t window);
 
 /* Return the file descriptor for the socket used for events.
- * You can use this if you want to wait on multiple sources. */
+ * You can use this if you want to wait on multiple sources, e.g. with poll(). */
 int i3ipc_event_fd(void);
 
-/* Same as i3ipc_event_fd, but for messages. */
+/* Same as i3ipc_event_fd, but for messages.
+ * This is not as useful. */
 int i3ipc_message_fd(void);
 
 /* Set the staticalloc flag, return the old value.
  * If this flag is set, you do not have to free results of the functions above,
- * but only the last one is valid. */
+ * but only the last one is valid. See the README for details.*/
 bool i3ipc_set_staticalloc(bool value);
 
 /* Set the loglevel, return the old value.
@@ -600,6 +601,7 @@ typedef struct __attribute__ ((__packed__)) I3ipc_message {
 } I3ipc_message;
 
 /* Initialise the connection to i3.
+ * The connection is initialised automatically, you generally do not need to call this.
  * socketpath is the path to the i3 socket, it may be NULL.
  * If socketpath is NULL, a path is determined by calling 'i3 --get-socketpath'. */
 int i3ipc_init_try(char* socketpath);
@@ -788,9 +790,9 @@ static char* i3ipc__error_buf;
 static size_t i3ipc__error_buf_size;
 
 enum I3ipc_context_state {
-    I3IPC_STATE_UNINITIALIZED    = 0,
-    I3IPC_STATE_READY           = 1,
-    I3IPC_STATE_ERROR_BEGIN = I3IPC_ERROR_CLOSED
+    I3IPC_STATE_UNINITIALIZED = 0,
+    I3IPC_STATE_READY         = 1,
+    I3IPC_STATE_ERROR_BEGIN   = I3IPC_ERROR_CLOSED
     /* error codes in I3ipc_error_codes are valid states */
 };
 

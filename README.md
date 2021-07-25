@@ -50,6 +50,8 @@ Copy `i3ipc.h` into your project. This is a single-header library, so include it
 
 There are no dependencies you have to install. (`i3ipc-simple` does depend on the C standard library and OS headers.) You do not need to specify any special compiler flags and the code should compile without warnings. (If you do get warnings, please file an issue.)
 
+At this point you can jump directly into making API calls. No initialisation is necessary. See `i3ipc.h` for the available functions.
+
 ## Receiving events
 
 Basically, you subscribe to events of the types you are interested in using `i3ipc_subscribe` or `i3ipc_subscribe_single` and wait for an event to arrive with `i3ipc_event_next` . For example:
