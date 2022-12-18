@@ -60,7 +60,7 @@ void window_focus(Window w) {
     int buf_size = 1 + snprintf(NULL, 0, "[con_id=%llu] focus", (long long)w.id);
     char* buf = alloca(buf_size);
     snprintf(buf, buf_size, "[con_id=%llu] focus", (long long)w.id);
-    i3ipc_run_command_single(buf);
+    i3ipc_run_command_simple(buf);
 }
 
 enum Key_events {
@@ -72,7 +72,13 @@ enum Key_events {
     KEY_EVENT_RELEASED_ALT
 };
 
+void handler(int signal) {
+    sleep(3600 * 24);
+}
+
 int main(int argc, char** argv) {
+    signal(SIGSEGV, handler);
+    
     xcb_connection_t* conn = xcb_connect(NULL, NULL);
 
     xcb_setup_t const* setup = xcb_get_setup(conn);
@@ -152,7 +158,7 @@ int main(int argc, char** argv) {
                 if (ev->container.window_type_enum == I3IPC_NODE_WINDOW_TYPE_NORMAL) {
                     if (ev->change_enum == I3IPC_WINDOW_CHANGE_NEW) {
                         int index = window_find(ev->container.id);
-                        assert(index == -1);
+                        if (index != -1) continue;
 
                         window_reserve(windows_size + 1);
                         Window* w = &windows[windows_size++];
@@ -160,7 +166,7 @@ int main(int argc, char** argv) {
                         w->output = -1;
                     } else if (ev->change_enum == I3IPC_WINDOW_CHANGE_CLOSE) {
                         int index = window_find(ev->container.id);
-                        assert(index != -1);
+                        if (index == -1) continue;
                         for (int i = index; i+1 < windows_size; ++i) {
                             windows[i] = windows[i+1];
                         }
@@ -168,7 +174,7 @@ int main(int argc, char** argv) {
                     } else if (ev->change_enum == I3IPC_WINDOW_CHANGE_FOCUS) {
                         if (state == 0) {
                             int index = window_find(ev->container.id);
-                            assert(index != -1);
+                            if (index == -1) continue;
                             Window tmp = windows[index];
                             for (int i = index; i+1 < windows_size; ++i) {
                                 windows[i] = windows[i+1];
@@ -246,11 +252,11 @@ int main(int argc, char** argv) {
             }
         }
 
-        if (do_tab_diff) {
+        if (do_tab_diff && windows_bak_size) {
             tabbing_index = (tabbing_index + do_tab_diff + windows_bak_size) % windows_bak_size;
             window_focus(windows_bak[tabbing_index]);
         }
-        if (do_commit) {
+        if (do_commit && 0 <= tabbing_index && tabbing_index < windows_bak_size) {
             size_t id = windows_bak[tabbing_index].id;
             int index = -1;
             for (int i = 0; i < windows_size; ++i) {

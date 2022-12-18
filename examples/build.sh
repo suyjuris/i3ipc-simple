@@ -3,16 +3,18 @@
 set -eu
 
 GCC=gcc
-CFLAGS="-Werror -Wall -Wextra -Wno-sign-compare -Wno-unused-parameter -fmax-errors=2 -ggdb -O0"
+# no -Werror for forwards-compatibility
+CFLAGS="-Wall -Wextra -Wno-sign-compare -Wno-unused-parameter -fmax-errors=2 -ggdb -O0 -I.."
 
 cd "$(dirname "$0")"
 
 if [ "$#" -lt 1 ]; then
     echo "Usage:"
-    echo "  $0 [examples|alttab]"
+    echo "  $0 [examples|swapcycle|alttab]"
     echo
     echo "Modes:"
     echo "  examples        Example snippets from the documentation"
+    echo "  swapcycle       Command that moves visible workspaces in a cycle"
     echo "  alttab          Program to implement a simple alt-tab behaviour, uses xcb and xcb-keysyms"
     echo
     echo "All executables are built into ../build"
@@ -21,7 +23,9 @@ fi;
 
 mkdir -p ../build
 
-if [ "$1" = "alttab" ]; then
+if [ "$1" = "swapcycle" ]; then
+    "$GCC" $CFLAGS swapcycle.c -o swapcycle
+elif [ "$1" = "alttab" ]; then
     "$GCC" $CFLAGS alttab.c -lxcb -lxcb-keysyms -o alttab
 elif [ "$1" = "examples" ]; then    
     "$GCC" $CFLAGS example1.c -o ../build/example1
