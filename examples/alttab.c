@@ -40,7 +40,12 @@ int window_find(size_t id) {
 }
 
 void window_init_from_tree(I3ipc_node* node) {
-    if (node->window_type_enum == I3IPC_NODE_WINDOW_TYPE_NORMAL) {
+    // xterm does not set _NET_WM_WINDOW_TYPE, so it will have window_type "unknown"
+    bool xterm = node->type_enum == I3IPC_NODE_TYPE_CON
+        && node->window_properties
+        && strcmp(node->window_properties->window_class, "XTerm") == 0;
+    
+    if (node->window_type_enum == I3IPC_NODE_WINDOW_TYPE_NORMAL || xterm) {
         window_reserve(windows_size + 1);
         Window* w = &windows[windows_size++];
         w->id = node->id;
@@ -72,13 +77,7 @@ enum Key_events {
     KEY_EVENT_RELEASED_ALT
 };
 
-void handler(int signal) {
-    sleep(3600 * 24);
-}
-
 int main(int argc, char** argv) {
-    signal(SIGSEGV, handler);
-    
     xcb_connection_t* conn = xcb_connect(NULL, NULL);
 
     xcb_setup_t const* setup = xcb_get_setup(conn);
