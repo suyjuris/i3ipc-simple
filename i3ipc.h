@@ -2230,7 +2230,7 @@ void i3ipc__init_globals(void) {
             type_first = i+1;
         } else {
             /* This one field has a different name, fix it up here. */
-            if (strcmp(f->full_name, "struct I3ipc_node_window_properties.window_class") == 0) {
+            if (strcmp(f->full_name, "I3ipc_node_window_properties.window_class") == 0) {
                 f->json_name = "class";
             } else {
                 f->json_name = f->name;
