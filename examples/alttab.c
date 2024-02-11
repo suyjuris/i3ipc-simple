@@ -39,13 +39,17 @@ int window_find(size_t id) {
     return index;
 }
 
-void window_init_from_tree(I3ipc_node* node) {
-    // xterm does not set _NET_WM_WINDOW_TYPE, so it will have window_type "unknown"
-    bool xterm = node->type_enum == I3IPC_NODE_TYPE_CON
+bool window_is_normal(I3ipc_node* node) {
+    bool xterm = node->window_type_enum == I3IPC_NODE_WINDOW_TYPE_UNKNOWN
         && node->window_properties
-        && strcmp(node->window_properties->window_class, "XTerm") == 0;
+        && node->window_properties->instance
+        && strcmp(node->window_properties->instance, "xterm") == 0;
     
-    if (node->window_type_enum == I3IPC_NODE_WINDOW_TYPE_NORMAL || xterm) {
+    return node->window_type_enum == I3IPC_NODE_WINDOW_TYPE_NORMAL || xterm;
+}
+
+void window_init_from_tree(I3ipc_node* node) {
+    if (window_is_normal(node)) {
         window_reserve(windows_size + 1);
         Window* w = &windows[windows_size++];
         w->id = node->id;
@@ -154,7 +158,8 @@ int main(int argc, char** argv) {
         if (ev_any) {
             if (ev_any->type == I3IPC_EVENT_WINDOW) {
                 I3ipc_event_window* ev = &ev_any->window;
-                if (ev->container.window_type_enum == I3IPC_NODE_WINDOW_TYPE_NORMAL) {
+                
+                if (window_is_normal(&ev->container)) {
                     if (ev->change_enum == I3IPC_WINDOW_CHANGE_NEW) {
                         int index = window_find(ev->container.id);
                         if (index != -1) continue;
