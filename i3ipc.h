@@ -1100,7 +1100,6 @@ static char const* const i3ipc__global_event_type_name[] = {
     "mode",
     "window",
     "barconfig_update",
-    "version",
     "binding",
     "shutdown",
     "tick"
